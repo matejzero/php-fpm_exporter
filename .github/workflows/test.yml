@@ -76,8 +76,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Scan image
-      uses: anchore/scan-action@v2
-      with:
-        image: "hipages/php-fpm_exporter:latest"
-        fail-build: true
+    # - name: Scan image
+    #   uses: anchore/scan-action@v2
+    #   with:
+    #     image: "hipages/php-fpm_exporter:latest"
+    #     fail-build: true
