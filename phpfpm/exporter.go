@@ -215,14 +215,20 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 			childName := fmt.Sprintf("%d", childNumber)
 
 			states := map[string]int{
-				"Idle":                         0,
-				"Running":                      0,
-				"Finishing":                    0,
-				"Reading headers":              0,
-				"Getting request informations": 0,
-				"Ending":                       0,
+				"Idle":                        0,
+				"Running":                     0,
+				"Finishing":                   0,
+				"Reading headers":             0,
+				"Getting request information": 0,
+				"Ending":                      0,
 			}
-			states[process.State]++
+
+			// PHP < 7.4 has a typo and uses word `informations`
+			if process.State == "Getting request informations" {
+				states["Getting request information"]++
+			} else {
+				states[process.State]++
+			}
 
 			for stateName, inState := range states {
 				ch <- prometheus.MustNewConstMetric(e.processState, prometheus.GaugeValue, float64(inState), pool.Name, childName, stateName, pool.Address)
